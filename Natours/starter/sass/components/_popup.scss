@@ -1,0 +1,114 @@
+.popup {
+  width: 100%;
+  height: 100vh;
+  background: rgba($color-grey-dark-3, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+
+  // Hide the popup when its not the target
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+
+  // Browser support
+  @supports (-webkit-backdrop-filter: blur(10px)) or
+    (backdrop-filter: blur(10px)) {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background: rgba($color-grey-dark-3, 0.3);
+  }
+
+  &__content {
+    width: 80%;
+    // height: 80vh;
+    @include center-in-a-div;
+    background-color: #ddd;
+    @include noticeable-shadow;
+    border-radius: 5px;
+    display: table;
+
+    // crop the images overflowing images which are hiding the border radius
+    overflow: hidden;
+
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0); // we set the translate because its already in the mixin already have the transform and we can only define transform once in a rule.
+    transition: transform 0.4s 0.3s;
+  }
+
+  &__left {
+    width: 33.3333%;
+
+    // will give the div full height of the parent, parent display type should be 'table'
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  &__right {
+    width: 66.6666%;
+    padding: 3rem 5rem;
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+  }
+
+  &__text {
+    font-size: 1.4rem;
+
+    -moz-column-count: 2;
+    -ms-column-count: 2;
+    -webkit-column-count: 2;
+    column-count: 2;
+    -moz-column-gap: 4rem;
+    -ms-column-gap: 4rem;
+    -webkit-column-gap: 4rem;
+    column-gap: 4rem;
+    -moz-column-rule: 1px solid $color-grey-light-2;
+    -ms-column-rule: 1px solid $color-grey-light-2;
+    -webkit-column-rule: 1px solid $color-grey-light-2;
+    column-rule: 1px solid $color-grey-light-2;
+
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  // Show the popup when it is the target
+  &:target {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  // scale the popup content to its full size when popup is the target
+  &:target &__content {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  // Popup close button styling
+  &__close {
+    &:link,
+    &:visited {
+      text-decoration: none;
+      color: $color-grey-dark;
+      position: absolute;
+      top: 2.5rem;
+      right: 2.5rem;
+      display: inline-block;
+      font-size: 4rem;
+      line-height: 1;
+      // transition: all 0.1s;
+    }
+
+    &:hover {
+      color: $color-primary;
+      font-weight: 700;
+    }
+  }
+}

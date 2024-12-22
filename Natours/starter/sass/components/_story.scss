@@ -1,0 +1,101 @@
+.story {
+  width: 75%;
+  margin: 0 auto;
+  box-shadow: 0 3rem 6rem rgba($color-black, 0.1);
+  background-color: rgba($color-white, 0.6);
+  border-radius: 3px;
+  padding: 6rem;
+  padding-left: 9rem;
+  font-size: $default-font-size;
+  transform: skewX(-12deg);
+
+  @include respond(tab-port) {
+    width: 100%;
+    padding: 4rem;
+    padding-left: 7rem;
+  }
+
+  @include respond(phone) {
+    transform: skewX(0);
+  }
+
+  // wont work, we need to set on individual elements separately
+  // & > * {
+  //   transform: skewX(
+  //     12deg
+  //   ); //wont work for the .shape element because it already has a transform property
+  // }
+
+  &__shape {
+    width: 15rem;
+    height: 15rem;
+    float: left;
+    // clip-path: circle(50% at 50% 50%);
+    // -webkit-clip-path: circle(50% at 50% 50%);
+
+    // the shape-outside property is used to give text around floated elements flow along the shape of the floated element. We can define any polygon along which the text would flow, here we have defined the text to flow around a circle whose radius is half the side of the square floated element and center is at the center of the square box (15rem height and width), works only when floated element has height and width
+
+    transform: translateX(-2rem) skewX(12deg);
+    position: relative;
+
+    overflow: hidden; // incase image spills over when clip-path is not supported
+    border-radius: 50%; // if shape-outside is not supported
+
+    @supports (clip-path: circle(0)) {
+      width: 15rem;
+      height: 15rem;
+      -webkit-clip-path: circle(50% at 50% 50%);
+      clip-path: circle(50% at 50% 50%);
+      -moz-shape-outside: circle(50% at 50% 50%);
+      shape-outside: circle(50% at 50% 50%);
+      border-radius: none;
+    }
+
+    @include respond(phone) {
+      transform: translateX(-2rem) skewX(0);
+    }
+  }
+
+  &__img {
+    height: 100%;
+    transform: translateX(-4rem) scale(1.4);
+    backface-visibility: hidden; // to hide movement glitch
+    transition: all 0.2s;
+  }
+
+  &__text {
+    transform: skewX(12deg);
+
+    @include respond(phone) {
+      transform: skewX(0);
+    }
+  }
+
+  &__caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 80%);
+    text-transform: uppercase;
+    color: $color-white;
+    font-size: 1.7rem;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.2s;
+    backface-visibility: hidden; // to hide movement glitch
+  }
+
+  // whenever hovered on the .story box, caption should do this
+  &:hover &__caption {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+
+  // whenever hovered on the .story box, image should do this
+  &:hover &__img {
+    transform: translateX(-4rem) scale(1);
+
+    // the filter property lets us apply various effects on the element
+    filter: blur(3px) brightness(80%);
+  }
+}
